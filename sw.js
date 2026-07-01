@@ -1,4 +1,4 @@
-const CACHE_NAME = 'radio-lider-v1';
+const CACHE_NAME = 'radio-lider-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,8 @@ const ASSETS = [
   './script.js',
   './share.js',
   './LOGO.png',
+  './icon-192.png',
+  './icon-512.png',
   './FONDO%202.jpg'
 ];
 
