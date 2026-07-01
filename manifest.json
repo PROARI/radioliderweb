@@ -1,21 +1,21 @@
 {
-  "name": "Radio Lider | Online 24 Horas",
+  "name": "Radio Lider",
   "short_name": "Radio Lider",
   "description": "Escucha Radio Lider en vivo. Disfruta de la mejor música online las 24 horas del día.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0d0d0d",
-  "theme_color": "#FF0080",
+  "theme_color": "#b83a03",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "LOGO.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512.png",
+      "src": "LOGO.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

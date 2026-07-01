@@ -10,6 +10,7 @@
 
     <link rel="icon" href="LOGO.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#b83a03">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -175,6 +176,13 @@
             <div class="pwa-body">
                 <h2 id="pwaTitle">¡Instala Radio Lider!</h2>
                 <p id="pwaDesc">Accede a todas las funciones desde tu dispositivo, fácil y rápido.</p>
+                <div id="iosInstructions" style="display: none; text-align: left; margin-top: 1rem; font-size: 0.95rem; line-height: 1.6; color: rgba(255,255,255,0.85);">
+                    <p style="margin-bottom: 0.5rem; font-weight: 600;">Para instalar en tu iPhone o iPad:</p>
+                    <ol style="padding-left: 1.2rem; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;">Presiona el botón de compartir <i class="bi bi-box-arrow-up" style="color: var(--main-color); font-weight: bold; font-size: 1.1rem; vertical-align: middle;"></i> en Safari.</li>
+                        <li>Desplázate hacia abajo y selecciona <b>"Agregar a la pantalla de inicio"</b> <i class="bi bi-plus-square" style="color: var(--main-color); font-weight: bold; font-size: 1.1rem; vertical-align: middle;"></i>.</li>
+                    </ol>
+                </div>
             </div>
             <div class="pwa-footer">
                 <button id="installApp" class="btn-install">INSTALAR AHORA</button>

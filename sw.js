@@ -1,4 +1,4 @@
-const CACHE_NAME = 'radio-lider-cache-v1';
+const CACHE_NAME = 'radio-lider-v1';
 const ASSETS = [
   './',
   './index.html',
@@ -6,23 +6,19 @@ const ASSETS = [
   './script.js',
   './share.js',
   './LOGO.png',
-  './FONDO 2.jpg',
-  './icon-192.png',
-  './icon-512.png',
-  './manifest.json'
+  './FONDO%202.jpg'
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
+self.addEventListener('install', (e) => {
+  e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
-    })
+    }).then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
@@ -31,37 +27,49 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  // Omitir peticiones de streaming de audio, APIs externas y peticiones que no sean del propio origen
-  if (
-    url.origin !== self.location.origin || 
-    event.request.url.includes('listen.php') || 
-    event.request.url.includes('proxy.php')
-  ) {
+self.addEventListener('fetch', (e) => {
+  const url = new URL(e.request.url);
+  
+  // Solo interceptar peticiones GET
+  if (e.request.method !== 'GET') {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+  // Evitar almacenar en caché la transmisión de audio y peticiones externas dinámicas
+  if (
+    url.hostname.includes('listen2myradio') || 
+    url.pathname.includes('listen.php') ||
+    url.search.includes('t=') || // Cache-buster del audio
+    url.href.includes('proxy.php') ||
+    url.hostname.includes('itunes.apple.com')
+  ) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
+
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
-      return fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
+      return fetch(e.request).then((networkResponse) => {
+        // Almacenar en caché nuevos recursos propios estáticos si es exitosa
+        if (networkResponse && networkResponse.status === 200 && url.origin === self.location.origin) {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, networkResponse.clone());
+            return networkResponse;
           });
         }
         return networkResponse;
       }).catch(() => {
-        return caches.match('./index.html');
+        // En caso de estar sin conexión y pedir el HTML, devolver index.html
+        if (e.request.headers.get('accept') && e.request.headers.get('accept').includes('text/html')) {
+          return caches.match('./index.html');
+        }
       });
     })
   );
