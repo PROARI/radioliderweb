@@ -6,7 +6,10 @@ const ASSETS = [
   './script.js',
   './share.js',
   './LOGO.png',
-  './FONDO 2.jpg'
+  './FONDO 2.jpg',
+  './icon-192.png',
+  './icon-512.png',
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
